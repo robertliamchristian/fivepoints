@@ -9,12 +9,19 @@
 </head>
 <body>
     <div class="container">
-    <h1> Five Points  </h1>
-    <h3>Water: 100 oz</h3>
-    <h3>Food: 1766 Calories</h3>
-    <h3>Sleep: 6 Hours</h3>
-    <h3>Mindfulness: 15 minutes</h3>
-    <h3>Exercise: 15 minutes</h3>
+        <h2>Five Points</h2>
+        <table id="goalsTable">
+            <thead>
+                <tr>
+                    <th>Goal</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Goal status will be inserted here -->
+            </tbody>
+        </table>
+        
 </div>
 <div class="container">
     <h2>Water</h2>
@@ -169,6 +176,23 @@
             $('#exerciseTable tbody').html(tableContent);
         });
     });
+
+    $.get("/checkDailyGoals", function(data) {
+            var goals = [
+                { name: "Water (100 oz)", key: "water_goal_met" },
+                { name: "Food (<1766 calories)", key: "food_goal_met" },
+                { name: "Sleep (≥6 hours)", key: "sleep_goal_met" },
+                { name: "Mindfulness (≥15 mins)", key: "mindfulness_goal_met" },
+                { name: "Exercise (≥15 mins)", key: "exercise_goal_met" }
+            ];
+
+            var tableContent = '';
+            goals.forEach(function(goal) {
+                tableContent += '<tr><td>' + goal.name + '</td><td>' + (data[goal.key] ? 'Met' : 'Not Met') + '</td></tr>';
+            });
+            $('#goalsTable tbody').html(tableContent);
+        });
+    
 </script>
 
 

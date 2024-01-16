@@ -143,5 +143,26 @@ app.get('/getExerciseToday', async (req, res) => {
 });
 
 
+//Check Goals
+app.get('/checkDailyGoals', async (req, res) => {
+    try {
+        const goalCheckQuery = `
+            SELECT 
+                (SELECT SUM(amount) FROM five_water WHERE date::date = CURRENT_DATE) >= 100 AS water_goal_met,
+                (SELECT SUM(calories) FROM five_food WHERE date::date = CURRENT_DATE) < 1766 AS food_goal_met,
+                (SELECT SUM(hours) FROM five_sleep WHERE date::date = CURRENT_DATE) >= 6 AS sleep_goal_met,
+                (SELECT SUM(minutes) FROM five_mindfulness WHERE date::date = CURRENT_DATE) >= 15 AS mindfulness_goal_met,
+                (SELECT SUM(minutes) FROM five_exercise WHERE date::date = CURRENT_DATE) >= 15 AS exercise_goal_met
+        `;
+        const result = await pool.query(goalCheckQuery);
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error checking daily goals");
+    }
+});
+
+
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
