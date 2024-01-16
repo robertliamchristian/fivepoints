@@ -8,8 +8,9 @@
 
 </head>
 <body>
-    <div class="container">
-        <h2>Five Points</h2>
+    <div id="title"><p>Five Points</p></div>
+
+    <div class="container" id="main">
         <table id="goalsTable">
             <thead>
                 <tr>
@@ -23,7 +24,7 @@
         </table>
         
 </div>
-<div class="container">
+<div class="container" id="water">
     <h2>Water</h2>
     <div class="form-group">
 
@@ -46,7 +47,7 @@
     </div>
 
     <!-- Add this inside your <body> tag in index.ejs -->
-<div class="container">
+<div class="container" id="food">
     <h2>Food</h2>
     <div class="form-group">
     <form action="/addFood" method="post">
@@ -99,7 +100,7 @@
 </script>
 </div>
 
-<div class="container">
+<div class="container" id="sleep">
 <h2>Sleep</h2>
 <div class="form-group">
 <form action="/addSleep" method="post">
@@ -114,7 +115,7 @@
 <div id="sleepDisplay">Today: <span id="sleepTotal">0</span> hours</div>
 </div>
 
-<div class="container">
+<div class="container" id="mindfulness">
 <h2>Mindfulness</h2>
 <div class="form-group">
 <form action="/addMindfulness" method="post">
@@ -129,7 +130,7 @@
 <div id="mindfulnessDisplay">Today: <span id="mindfulnessTotal">0</span> minutes</div>
 </div>
 
-<div class="container">
+<div class="container" id="exercise">
 <h2>Exercise</h2>
 <div class="form-group">
 

@@ -9,16 +9,47 @@ body {
 
 h1, h2 {
     text-align: center;
-    color: #778DA9;
+    color: #2f536b;
+}
+
+#title {
+    font-size: 24pt;
+    font-weight: bold;
+    text-align: center;
+    color:rgb(201, 149, 8)
 }
 
 .container {
     width: 80%;
-    margin: 20px auto;
+    margin: 10px auto;
     padding: 20px;
     background-color: #1B263B;
     border-radius: 8px;
 }
+
+
+
+#water {
+    background-color: rgba(184, 190, 221, 0.85);
+}
+
+#food{
+    background-color: rgba(156, 137, 184, 0.85);
+}
+
+#sleep {
+    background-color: rgba(240, 166, 202, 0.85);
+}
+
+#mindfulness {
+    background-color: rgba(239, 195, 230, 0.85);
+}
+
+#exercise {
+    background-color: rgba(240, 230, 239, 0.85);
+}
+
+
 
 .form-group {
     margin-bottom: 15px;
@@ -78,5 +109,5 @@ td, th {
 }
 
 td {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(13, 27, 42, 0.5);
 }
