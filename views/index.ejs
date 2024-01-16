@@ -1,0 +1,176 @@
+<!-- views/index.ejs -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Five Points</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+</head>
+<body>
+    <div class="container">
+    <h1> Five Points  </h1>
+    <h3>Water: 100 oz</h3>
+    <h3>Food: 1766 Calories</h3>
+    <h3>Sleep: 6 Hours</h3>
+    <h3>Mindfulness: 15 minutes</h3>
+    <h3>Exercise: 15 minutes</h3>
+</div>
+<div class="container">
+    <h2>Water</h2>
+    <div class="form-group">
+
+    <form action="/addWater" method="post">
+        <input type="hidden" name="amount" value="10">
+        <button type="submit">Add 10oz of Water</button>
+    </form>
+    </div>
+<br>
+    <div id="waterConsumedDisplay">Total Water Consumed Today: <span id="waterTotal">0</span> oz</div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.get("/waterConsumedToday", function(data) {
+                $('#waterTotal').text(data.totalWaterConsumedToday);
+            });
+        });
+    </script>
+    </div>
+
+    <!-- Add this inside your <body> tag in index.ejs -->
+<div class="container">
+    <h2>Food</h2>
+    <div class="form-group">
+    <form action="/addFood" method="post">
+        <label for="name">Food Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <br>
+
+        <label for="calories">Calories:</label>
+        <input type="number" id="calories" name="calories" required>
+        <br>
+        <br>
+        <button type="submit">Add Food</button>
+    </form>
+    </div>
+
+<h2>Today:</h2>
+<table id="foodTable">
+    <thead>
+        <tr>
+            <th>Food Name</th>
+            <th>Calories</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Food entries will be inserted here -->
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $.get("/getFoodToday", function(data) {
+            var tableContent = '';
+            data.forEach(function(row) {
+                tableContent += '<tr><td>' + row.name + '</td><td>' + row.calories + '</td><td>' + new Date(row.date).toLocaleTimeString() + '</td></tr>';
+            });
+            $('#foodTable tbody').html(tableContent);
+        });
+    });
+</script>
+</div>
+
+<div class="container">
+<h2>Sleep</h2>
+<div class="form-group">
+<form action="/addSleep" method="post">
+    <label for="sleepHours">Hours of Sleep:</label>
+    <input type="number" id="sleepHours" name="hours" required>
+    <br>
+    <br>
+    <button type="submit">Add Sleep Record</button>
+</form>
+</div>
+<br>
+<div id="sleepDisplay">Today: <span id="sleepTotal">0</span> hours</div>
+</div>
+
+<div class="container">
+<h2>Mindfulness</h2>
+<div class="form-group">
+<form action="/addMindfulness" method="post">
+    <label for="mindfulnessMinutes">Minutes of Mindfulness:</label>
+    <input type="number" id="mindfulnessMinutes" name="minutes" required>
+    <br>
+    <br>
+    <button type="submit">Add Mindfulness Record</button>
+</form>
+</div>
+<br>
+<div id="mindfulnessDisplay">Today: <span id="mindfulnessTotal">0</span> minutes</div>
+</div>
+
+<div class="container">
+<h2>Exercise</h2>
+<div class="form-group">
+
+<form action="/addExercise" method="post">
+    <label for="exerciseType">Type of Exercise:</label>
+    <input type="text" id="exerciseType" name="type" required>
+<br>
+<br>
+    <label for="exerciseMinutes">Minutes of Exercise:</label>
+    <input type="number" id="exerciseMinutes" name="minutes" required>
+<br>
+<br>
+    <button type="submit">Add Exercise Record</button>
+</form>
+</div>
+
+<h2>Today:</h2>
+<table id="exerciseTable">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Minutes</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Exercise entries will be inserted here -->
+    </tbody>
+</table>
+</div>
+
+<!-- JQuery for AJAX Calls -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // AJAX call for Sleep Data
+        $.get("/getSleepToday", function(data) {
+            $('#sleepTotal').text(data.totalSleepToday);
+        });
+
+        // AJAX call for Mindfulness Data
+        $.get("/getMindfulnessToday", function(data) {
+            $('#mindfulnessTotal').text(data.totalMindfulnessToday);
+        });
+
+        // AJAX call for Exercise Data
+        $.get("/getExerciseToday", function(data) {
+            var tableContent = '';
+            data.forEach(function(row) {
+                tableContent += '<tr><td>' + row.type + '</td><td>' + row.minutes + '</td><td>' + new Date(row.date).toLocaleTimeString() + '</td></tr>';
+            });
+            $('#exerciseTable tbody').html(tableContent);
+        });
+    });
+</script>
+
+
+</body>
+</html>
