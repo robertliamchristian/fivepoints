@@ -80,14 +80,22 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        $.get("/getFoodToday", function(data) {
-            var tableContent = '';
-            data.forEach(function(row) {
-                tableContent += '<tr><td>' + row.name + '</td><td>' + row.calories + '</td><td>' + new Date(row.date).toLocaleTimeString() + '</td></tr>';
-            });
-            $('#foodTable tbody').html(tableContent);
+    $.get("/getFoodToday", function(data) {
+        var tableContent = '';
+        var totalCalories = 0;
+
+        data.forEach(function(row) {
+            totalCalories += row.calories; // Add the calories to the total
+            tableContent += '<tr><td>' + row.name + '</td><td>' + row.calories + '</td><td>' + new Date(row.date).toLocaleTimeString() + '</td></tr>';
         });
+
+        // Append the total row at the end
+        tableContent += '<tr><td><strong>Total Calories</strong></td><td><strong>' + totalCalories + '</strong></td><td></td></tr>';
+
+        $('#foodTable tbody').html(tableContent);
     });
+});
+
 </script>
 </div>
 
@@ -168,13 +176,23 @@
         });
 
         // AJAX call for Exercise Data
-        $.get("/getExerciseToday", function(data) {
-            var tableContent = '';
-            data.forEach(function(row) {
-                tableContent += '<tr><td>' + row.type + '</td><td>' + row.minutes + '</td><td>' + new Date(row.date).toLocaleTimeString() + '</td></tr>';
-            });
-            $('#exerciseTable tbody').html(tableContent);
+        $(document).ready(function() {
+    $.get("/getExerciseToday", function(data) {
+        var tableContent = '';
+        var totalMinutes = 0;
+
+        data.forEach(function(row) {
+            totalMinutes += row.minutes; // Add the minutes to the total
+            tableContent += '<tr><td>' + row.type + '</td><td>' + row.minutes + '</td><td>' + new Date(row.date).toLocaleTimeString() + '</td></tr>';
         });
+
+        // Append the total row at the end
+        tableContent += '<tr><td><strong>Total Minutes</strong></td><td><strong>' + totalMinutes + '</strong></td><td></td></tr>';
+
+        $('#exerciseTable tbody').html(tableContent);
+    });
+});
+
     });
 
     $.get("/checkDailyGoals", function(data) {
