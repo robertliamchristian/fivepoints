@@ -12,11 +12,17 @@ h1, h2 {
     color: #2f536b;
 }
 
+#daysRemainingDisplay {
+    text-align: center;
+    color: #b43004;
+    font-size: 14pt;
+}
+
 #title {
     font-size: 24pt;
     font-weight: bold;
     text-align: center;
-    color:rgb(201, 149, 8)
+    color:rgb(243, 221, 160)
 }
 
 .container {

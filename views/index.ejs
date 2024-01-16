@@ -11,6 +11,22 @@
     <div id="title"><p>Five Points</p></div>
 
     <div class="container" id="main">
+        <div class="form-group">
+
+        <form action="/markComplete" method="post">
+            <button type="submit">Mark All Goals as Complete</button>
+        </form>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $.get("/getCompleteCount", function(count) {        
+                    $('#completeCountDisplay').text(count);
+        });
+        });
+        </script>
+        
+        <div><h2>Total Days All Goals Met: <span id="completeCountDisplay">0</span></h2></div>
+        <div id="daysRemainingDisplay"></div>
         <table id="goalsTable">
             <thead>
                 <tr>
@@ -22,7 +38,7 @@
                 <!-- Goal status will be inserted here -->
             </tbody>
         </table>
-        
+        <br>
 </div>
 <div class="container" id="water">
     <h2>Water</h2>
@@ -211,6 +227,19 @@
             });
             $('#goalsTable tbody').html(tableContent);
         });
+
+        function calculateDaysRemaining() {
+        const currentDate = new Date();
+        const targetDate  = new Date('June 5, 2024');
+        const timeDiff = targetDate - currentDate
+
+        const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+        document.getElementById('daysRemainingDisplay').textContent = `${daysRemaining} days left until ${targetDate.toDateString()}`;
+}
+
+document.addEventListener('DOMContentLoaded', calculateDaysRemaining);
+
+
     
 </script>
 

@@ -163,6 +163,32 @@ app.get('/checkDailyGoals', async (req, res) => {
 });
 
 
+// Complete Goals
+app.post('/markComplete', async (req, res) => {
+    try {
+        const insertQuery = 'INSERT INTO five_complete (status) VALUES (TRUE)';
+        await pool.query(insertQuery);
+        res.redirect('/');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error marking goals as complete");
+    }
+});
+
+// Get Complete Goals
+app.get('/getCompleteCount', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT COUNT(*) FROM five_complete WHERE status = TRUE');
+        res.json(result.rows[0].count);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error retrieving completion count");
+    }
+});
+
+           
+
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

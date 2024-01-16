@@ -41,3 +41,9 @@ create table five_exercise (
     minutes INT NOT NULL,
     date TIMESTAMP WITH TIME ZONE NOT NULL
 );
+
+CREATE TABLE five_complete (
+    id SERIAL PRIMARY KEY NOT NULL,
+    status BOOLEAN NOT NULL,
+    date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
