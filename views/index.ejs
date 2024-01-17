@@ -8,8 +8,9 @@
 
 </head>
 <body>
-    <div id="title"><p>Five Points</p></div>
-
+    <div class="titlecontainer" >
+    <div id="title" class="cycle-color"><p>Five Points</p></div>
+</div>
     <div class="container" id="main">
         <div class="form-group">
 
@@ -239,10 +240,33 @@
 
 document.addEventListener('DOMContentLoaded', calculateDaysRemaining);
 
+const colors = ['rgba(184, 190, 221, 0.85)', 'rgba(156, 137, 184, 0.85)', 'gba(240, 166, 202, 0.85)', 'rgba(239, 195, 230, 0.85)', 'rgba(240, 230, 239, 0.85)']; // Your theme colors
+    let currentColorIndex = 0;
+
+    function cycleColors() {
+        // Set the color for elements you want to change
+        document.body.style.color = colors[currentColorIndex];
+
+        // Update the current color index
+        currentColorIndex = (currentColorIndex + 1) % colors.length;
+    }
+
+    // Change color every 2 seconds
+    setInterval(cycleColors, 2000);
+
+    function cycleColors() {
+    const elements = document.querySelectorAll('.cycle-color'); // Select elements with the class 'cycle-color'
+    elements.forEach(element => {
+        element.style.color = colors[currentColorIndex];
+    });
+
+    currentColorIndex = (currentColorIndex + 1) % colors.length;
+}
+
 
     
 </script>
-
+<div class="container"></div>
 
 </body>
 </html>

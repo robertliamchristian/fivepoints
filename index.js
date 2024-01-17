@@ -2,6 +2,8 @@ const express = require('express');
 const { Pool } = require('pg'); // Make sure you've installed pg module
 const app = express();
 
+
+
 const pool = new Pool({
     user: 'iqtbqvpacrddxr',
     host: 'ec2-44-206-18-218.compute-1.amazonaws.com',
@@ -37,14 +39,25 @@ app.post('/addWater', async (req, res) => {
 
 app.get('/waterConsumedToday', async (req, res) => {
     try {
-        const result = await pool.query('SELECT SUM(amount) AS total FROM five_water WHERE date::date = CURRENT_DATE');
+        // Connect to the database and set the timezone for this session
+        const client = await pool.connect();
+        await client.query("SET TIME ZONE 'America/Los_Angeles'");
+
+        // Perform the query to get the total water consumed today
+        const result = await client.query("SELECT SUM(amount) AS total FROM five_water WHERE date::date = CURRENT_DATE");
         const totalWater = result.rows[0].total || 0; // If no water consumed, default to 0
+
+        // Send the result back
         res.json({ totalWaterConsumedToday: totalWater });
+
+        // Release the client back to the pool
+        client.release();
     } catch (err) {
         console.error(err);
         res.status(500).send("Error retrieving water consumption data");
     }
 });
+
 
 
 // Food
@@ -61,14 +74,25 @@ app.post('/addFood', async (req, res) => {
 });
 
 app.get('/getFoodToday', async (req, res) => {
+    const client = await pool.connect(); // Get a client from the pool
     try {
-        const result = await pool.query('SELECT * FROM five_food WHERE date::date = CURRENT_DATE');
-        res.json(result.rows); // Send the result as JSON
+        // Set the time zone for this session to Pacific Time
+        await client.query("SET TIME ZONE 'America/Los_Angeles'");
+
+        // Perform the query to get food data for the current date
+        const result = await client.query("SELECT * FROM five_food WHERE date::date = CURRENT_DATE");
+
+        // Send the result back as JSON
+        res.json(result.rows);
     } catch (err) {
         console.error(err);
         res.status(500).send("Error retrieving food data");
+    } finally {
+        // Release the client back to the pool
+        client.release();
     }
 });
+
 
 // Sleep
 app.post('/addSleep', async (req, res) => {
@@ -84,15 +108,26 @@ app.post('/addSleep', async (req, res) => {
 });
 
 app.get('/getSleepToday', async (req, res) => {
+    const client = await pool.connect(); // Get a client from the pool
     try {
-        const result = await pool.query('SELECT SUM(hours) AS total FROM five_sleep WHERE date::date = CURRENT_DATE');
+        // Set the time zone for this session to Pacific Time
+        await client.query("SET TIME ZONE 'America/Los_Angeles'");
+
+        // Perform the query to get the total sleep hours for the current date
+        const result = await client.query("SELECT SUM(hours) AS total FROM five_sleep WHERE date::date = CURRENT_DATE");
         const totalSleep = result.rows[0].total || 0; // If no sleep recorded, default to 0
+
+        // Send the result back as JSON
         res.json({ totalSleepToday: totalSleep });
     } catch (err) {
         console.error(err);
         res.status(500).send("Error retrieving sleep data");
+    } finally {
+        // Release the client back to the pool
+        client.release();
     }
 });
+
 
 
 // Mindfulness
@@ -109,15 +144,26 @@ app.post('/addMindfulness', async (req, res) => {
 });
 
 app.get('/getMindfulnessToday', async (req, res) => {
+    const client = await pool.connect(); // Get a client from the pool
     try {
-        const result = await pool.query('SELECT SUM(minutes) AS total FROM five_mindfulness WHERE date::date = CURRENT_DATE');
+        // Set the time zone for this session to Pacific Time
+        await client.query("SET TIME ZONE 'America/Los_Angeles'");
+
+        // Perform the query to get the total mindfulness minutes for the current date
+        const result = await client.query("SELECT SUM(minutes) AS total FROM five_mindfulness WHERE date::date = CURRENT_DATE");
         const totalMindfulness = result.rows[0].total || 0; // If no mindfulness recorded, default to 0
+
+        // Send the result back as JSON
         res.json({ totalMindfulnessToday: totalMindfulness });
     } catch (err) {
         console.error(err);
         res.status(500).send("Error retrieving mindfulness data");
+    } finally {
+        // Release the client back to the pool
+        client.release();
     }
 });
+
 
 // Exercise
 app.post('/addExercise', async (req, res) => {
@@ -133,19 +179,35 @@ app.post('/addExercise', async (req, res) => {
 });
 
 app.get('/getExerciseToday', async (req, res) => {
+    const client = await pool.connect(); // Get a client from the pool
     try {
-        const result = await pool.query('SELECT type, minutes, date FROM five_exercise WHERE date::date = CURRENT_DATE');
+        // Set the time zone for this session to Pacific Time
+        await client.query("SET TIME ZONE 'America/Los_Angeles'");
+
+        // Perform the query to get exercise data for the current date
+        const result = await client.query("SELECT type, minutes, date FROM five_exercise WHERE date::date = CURRENT_DATE");
+
+        // Send the result back as JSON
         res.json(result.rows);
     } catch (err) {
         console.error(err);
         res.status(500).send("Error retrieving exercise data");
+    } finally {
+        // Release the client back to the pool
+        client.release();
     }
 });
 
 
+
 //Check Goals
 app.get('/checkDailyGoals', async (req, res) => {
+    const client = await pool.connect(); // Get a client from the pool
     try {
+        // Set the time zone for this session to Pacific Time
+        await client.query("SET TIME ZONE 'America/Los_Angeles'");
+
+        // Perform the query to check if daily goals are met
         const goalCheckQuery = `
             SELECT 
                 (SELECT SUM(amount) FROM five_water WHERE date::date = CURRENT_DATE) >= 100 AS water_goal_met,
@@ -154,13 +216,19 @@ app.get('/checkDailyGoals', async (req, res) => {
                 (SELECT SUM(minutes) FROM five_mindfulness WHERE date::date = CURRENT_DATE) >= 15 AS mindfulness_goal_met,
                 (SELECT SUM(minutes) FROM five_exercise WHERE date::date = CURRENT_DATE) >= 15 AS exercise_goal_met
         `;
-        const result = await pool.query(goalCheckQuery);
+        const result = await client.query(goalCheckQuery);
+        
+        // Send the result back as JSON
         res.json(result.rows[0]);
     } catch (err) {
         console.error(err);
         res.status(500).send("Error checking daily goals");
+    } finally {
+        // Release the client back to the pool
+        client.release();
     }
 });
+
 
 
 // Complete Goals

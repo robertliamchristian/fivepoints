@@ -19,17 +19,35 @@ h1, h2 {
 }
 
 #title {
-    font-size: 24pt;
+    font-size: 36pt;
     font-weight: bold;
     text-align: center;
     color:rgb(243, 221, 160)
+}
+
+.titlecontainer {
+    width: 80%;
+    margin: 10px auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    background: linear-gradient(
+        85deg, 
+        rgba(184, 190, 221, 0.85),
+        rgba(156, 137, 184, 0.85),
+        rgba(240, 166, 202, 0.85),
+        rgba(239, 195, 230, 0.85),
+        rgba(240, 230, 239, 0.85)
+    );
+    border-radius: 8px;
 }
 
 .container {
     width: 80%;
     margin: 10px auto;
     padding: 20px;
-    background-color: #1B263B;
+    background-color: #2e3c55;
     border-radius: 8px;
 }
 
@@ -85,7 +103,7 @@ button {
 }
 
 button:hover {
-    background-color: #E0E1DD;
+    background-color: #e6bed5;
 }
 
 #waterConsumedDisplay, 
@@ -116,4 +134,8 @@ td, th {
 
 td {
     background-color: rgba(13, 27, 42, 0.5);
+}
+
+.cycle-color {
+    transition: color 2s ease; /* Smooth transition for the color property */
 }
