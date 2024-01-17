@@ -14,17 +14,37 @@
     <div class="container" id="main">
         <div class="form-group">
 
-        <form action="/markComplete" method="post">
-            <button type="submit">Mark All Goals as Complete</button>
-        </form>
+            <form id="markCompleteForm" action="/markComplete" method="post">
+                <button type="submit">Mark All Goals as Complete</button>
+            </form>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#markCompleteForm').on('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            $.post('/markComplete', function(response) {
+                // Display an alert or modal here
+                alert('All goals marked as complete!');
+            }).fail(function() {
+                alert('Error occurred while marking goals as complete.');
+            });
+        });
+    });
+</script>
+
+            
         </div>
-        <script>
-            $(document).ready(function() {
-                $.get("/getCompleteCount", function(count) {        
-                    $('#completeCountDisplay').text(count);
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $.get("/getCompleteCount", function(response) {
+            console.log(response);
+            $('#completeCountDisplay').text(response);
         });
-        });
-        </script>
+    });
+</script>
+
         
         <div><h2>Total Days All Goals Met: <span id="completeCountDisplay">0</span></h2></div>
         <div id="daysRemainingDisplay"></div>

@@ -5,15 +5,12 @@ const app = express();
 
 
 const pool = new Pool({
-    user: 'iqtbqvpacrddxr',
-    host: 'ec2-44-206-18-218.compute-1.amazonaws.com',
-    database: 'd1k50gss0f1psn',
-    password: 'f8d954a78f946cbba2fa4fef4d6acc5140a455b3afc093afb8d2479065bab910',
-    port: 5432,
+    connectionString: process.env.DATABASE_URL, // Heroku provides this
     ssl: {
-        rejectUnauthorized: false // This is often necessary for connections to Heroku Postgres
+        rejectUnauthorized: false // Necessary for Heroku's PostgreSQL
     }
 });
+
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
