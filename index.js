@@ -14,6 +14,9 @@ const pool = new Pool({
 
 
 
+
+
+
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
