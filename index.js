@@ -5,11 +5,13 @@ const app = express();
 
 
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL, // Heroku provides this
+    connectionString: process.env.DATABASE_URL,
     ssl: {
-        rejectUnauthorized: false // Necessary for Heroku's PostgreSQL
+        rejectUnauthorized: false 
     }
 });
+
+
 
 
 app.set('view engine', 'ejs');
